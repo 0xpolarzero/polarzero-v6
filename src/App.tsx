@@ -6,6 +6,7 @@ import { TimelineFilters } from "@/components/timeline/timeline-filters";
 import { Button } from "@/components/ui/button";
 import { SOCIALS } from "@/data/socials";
 import type { TimelineCategory } from "@/data/timeline";
+import { Changelog } from "@/components/changelog";
 
 function App() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -121,6 +122,10 @@ function App() {
             }
           />
           <Timeline filter={timelineFilter} />
+        </section>
+
+        <section id="changelog" className="pt-16">
+          <Changelog />
         </section>
       </main>
     </div>
