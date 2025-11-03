@@ -808,14 +808,14 @@ export const TIMELINE: TimelineYear[] = [
               Wrote a Master's thesis on immersive audio integration in virtual
               worlds.
             </p>
-            <p>
+            <div>
               <blockquote className="italic pl-4 border-l-2 border-secondary/30">
                 Une place pour l’audio immersif dans le Web 3.0 : intégration
                 dans le métavers; adaptation à un nouveau modèle, immersion dans
                 un espace en pleine expansion, expériences immersives
                 accessibles et avancées...
               </blockquote>
-            </p>
+            </div>
             <ul className="list-inside">
               <li>
                 -{" "}

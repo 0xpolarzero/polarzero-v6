@@ -10,7 +10,7 @@ type TimelineFiltersProps = {
 };
 
 export const TimelineFilters = ({ value, onChange }: TimelineFiltersProps) => (
-  <div className="flex flex-wrap items-center">
+  <div className="flex flex-wrap items-center gap-1">
     <FunnelIcon size={14} weight="light" className="mr-4" />
     {[
       {
