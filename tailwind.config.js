@@ -19,6 +19,10 @@ const config = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        charcoal: "hsl(var(--charcoal))",
+        mist: "hsl(var(--mist))",
+        violet: "hsl(var(--violet))",
+        neutralHighlight: "hsl(var(--neutral-highlight))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -59,6 +63,7 @@ const config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        xs: "0.2rem",
       },
       keyframes: {
         "accordion-down": {
@@ -73,6 +78,13 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      fontFamily: {
+        sans: ['"Plus Jakarta Sans"', "system-ui", "sans-serif"],
+        mono: ['"JetBrains Mono"', "ui-monospace", "SFMono-Regular"],
+      },
+      letterSpacing: {
+        wide: "0.12em",
       },
     },
   },
