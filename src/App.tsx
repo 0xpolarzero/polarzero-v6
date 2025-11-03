@@ -127,6 +127,8 @@ function App() {
         <section id="changelog" className="pt-16">
           <Changelog />
         </section>
+
+        <section id="footer" className="pt-16 h-48"></section>
       </main>
     </div>
   );
