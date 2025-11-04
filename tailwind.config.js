@@ -21,7 +21,6 @@ const config = {
         foreground: "hsl(var(--foreground))",
         charcoal: "hsl(var(--charcoal))",
         mist: "hsl(var(--mist))",
-        violet: "hsl(var(--violet))",
         neutralHighlight: "hsl(var(--neutral-highlight))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
