@@ -77,15 +77,49 @@ const buildLinkButtons = (
 
 type TimelineCardProps = {
   item: TimelineItem;
+  itemId: string;
+  highlighted?: boolean;
+  onHover?: (itemId: string | null) => void;
 };
 
-export const TimelineCard = ({ item }: TimelineCardProps) => {
+export const TimelineCard = ({
+  item,
+  itemId,
+  highlighted = false,
+  onHover,
+}: TimelineCardProps) => {
   const categoryMeta = timelineCategoryMeta[item.category];
   const endDate = item.to ?? null;
   const linkButtons = buildLinkButtons(item.links);
 
+  const handlePointerEnter = () => {
+    onHover?.(itemId);
+  };
+
+  const handlePointerLeave = () => {
+    onHover?.(null);
+  };
+
+  const handleFocus = () => {
+    onHover?.(itemId);
+  };
+
+  const handleBlur = () => {
+    onHover?.(null);
+  };
+
   return (
-    <article className="relative rounded-xs border border-white/12 bg-white/[0.02] px-6 py-5 transition duration-150 ease-out hover:border-mist/40 hover:bg-white/[0.05] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-[rgba(7,7,9,0.75)] md:px-8 md:py-6">
+    <article
+      id={itemId}
+      data-highlighted={highlighted ? "true" : undefined}
+      className={cn(
+        "relative rounded-xs border border-white/12 bg-white/[0.02] px-6 py-5 transition duration-150 ease-out hover:border-mist/40 hover:bg-white/[0.05] data-[highlighted=true]:border-mist/50 data-[highlighted=true]:bg-white/[0.05] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-[rgba(7,7,9,0.75)] md:px-8 md:py-6",
+      )}
+      onMouseEnter={handlePointerEnter}
+      onMouseLeave={handlePointerLeave}
+      onFocusCapture={handleFocus}
+      onBlurCapture={handleBlur}
+    >
       <div className="mb-2 flex items-center justify-between gap-2">
         <h3 className="text-[18px] leading-snug text-foreground">
           {item.title}

@@ -1,12 +1,14 @@
 import { CheckIcon } from "@phosphor-icons/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import { Changelog } from "@/components/changelog";
 import { NavigationIsland } from "@/components/navigation-island";
 import Timeline from "@/components/timeline/timeline";
 import { TimelineFilters } from "@/components/timeline/timeline-filters";
 import { Button } from "@/components/ui/button";
 import { SOCIALS } from "@/data/socials";
 import type { TimelineCategory } from "@/data/timeline";
-import { Changelog } from "@/components/changelog";
+import { cn } from "@/lib/utils";
 
 function App() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -14,6 +16,12 @@ function App() {
   const [timelineFilter, setTimelineFilter] = useState<
     TimelineCategory | "all"
   >("all");
+  const filtersWrapperRef = useRef<HTMLDivElement | null>(null);
+  const filtersContainerRef = useRef<HTMLDivElement | null>(null);
+  const mediaQueryRef = useRef<MediaQueryList | null>(null);
+  const scheduledFilterUpdateRef = useRef<number | null>(null);
+  const [filtersStuck, setFiltersStuck] = useState(false);
+  const [filtersTranslate, setFiltersTranslate] = useState(0);
 
   const handleCopy = async (value: string) => {
     if (typeof navigator === "undefined" || !navigator.clipboard) {
@@ -37,6 +45,116 @@ function App() {
     const timer = window.setTimeout(() => setCopiedValue(null), 1600);
     return () => window.clearTimeout(timer);
   }, [copiedValue]);
+
+  const updateFilterPositions = useCallback(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const wrapper = filtersWrapperRef.current;
+    const container = filtersContainerRef.current;
+    const mediaQuery = mediaQueryRef.current;
+
+    if (!mediaQuery?.matches || !wrapper || !container) {
+      setFiltersStuck(false);
+      setFiltersTranslate(0);
+      return;
+    }
+
+    const computedTop = parseFloat(window.getComputedStyle(wrapper).top) || 0;
+    const rect = wrapper.getBoundingClientRect();
+    const isStuck = rect.top <= computedTop + 0.5;
+
+    setFiltersStuck(isStuck);
+
+    if (isStuck) {
+      const parentWidth = wrapper.offsetWidth;
+      const contentWidth = container.offsetWidth;
+      const offset = Math.max((parentWidth - contentWidth) / 2, 0);
+      setFiltersTranslate(offset);
+    } else {
+      setFiltersTranslate(0);
+    }
+  }, []);
+
+  const scrollToActivitySection = useCallback(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const section = document.getElementById("activity");
+
+    if (!section) {
+      return;
+    }
+
+    const prefersReducedMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const wrapper = filtersWrapperRef.current;
+    const computedTop =
+      wrapper && typeof window.getComputedStyle === "function"
+        ? parseFloat(window.getComputedStyle(wrapper).top) || 0
+        : 0;
+
+    const docStyleTop =
+      typeof window.getComputedStyle === "function"
+        ? window
+            .getComputedStyle(document.documentElement)
+            .getPropertyValue("--nav-island-offset")
+        : "";
+    const navOffset = parseFloat(docStyleTop) || computedTop || 100;
+
+    const targetTop = Math.max(section.offsetTop - navOffset, 0);
+
+    window.scrollTo({
+      top: targetTop,
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    mediaQueryRef.current = mediaQuery;
+
+    const handleScroll = () => updateFilterPositions();
+    const handleResize = () => updateFilterPositions();
+    const handleMediaChange = () => updateFilterPositions();
+
+    updateFilterPositions();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleResize);
+
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", handleMediaChange);
+    } else if (typeof mediaQuery.addListener === "function") {
+      mediaQuery.addListener(handleMediaChange);
+    }
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+
+      if (typeof mediaQuery.removeEventListener === "function") {
+        mediaQuery.removeEventListener("change", handleMediaChange);
+      } else if (typeof mediaQuery.removeListener === "function") {
+        mediaQuery.removeListener(handleMediaChange);
+      }
+
+      if (scheduledFilterUpdateRef.current !== null) {
+        window.cancelAnimationFrame(scheduledFilterUpdateRef.current);
+        scheduledFilterUpdateRef.current = null;
+      }
+
+      mediaQueryRef.current = null;
+    };
+  }, [updateFilterPositions]);
 
   const closeMobileNav = () => setMobileNavOpen(false);
 
@@ -111,16 +229,55 @@ function App() {
           </div>
         </section>
 
-        <section id="activity" className="space-y-4 pt-16">
+        <section id="activity" className="pt-16">
           <h2 className="text-xs font-mono uppercase tracking-[0.32em] text-muted-foreground">
             Activity
           </h2>
-          <TimelineFilters
-            value={timelineFilter}
-            onChange={(value) =>
-              setTimelineFilter(value as TimelineCategory | "all")
-            }
-          />
+          <div
+            ref={filtersWrapperRef}
+            data-stuck={filtersStuck ? "true" : "false"}
+            className={cn(
+              "mt-4 mb-4 md:sticky md:top-[var(--nav-island-offset,6.25rem)] md:z-30",
+              filtersStuck && "md:mt-0",
+            )}
+          >
+            <div
+              ref={filtersContainerRef}
+              className={cn(
+                "md:inline-flex md:w-auto transition-transform duration-300 ease-out will-change-transform",
+                filtersStuck &&
+                  "md:rounded-xs md:border md:border-white/12 md:bg-white/[0.05] md:px-4 md:py-2 md:backdrop-blur-md",
+              )}
+              style={{
+                transform: `translateX(${filtersStuck ? filtersTranslate : 0}px)`,
+              }}
+            >
+              <TimelineFilters
+                value={timelineFilter}
+                onChange={(value) => {
+                  setTimelineFilter(value as TimelineCategory | "all");
+                  scrollToActivitySection();
+
+                  if (typeof window === "undefined") {
+                    return;
+                  }
+
+                  if (scheduledFilterUpdateRef.current !== null) {
+                    window.cancelAnimationFrame(
+                      scheduledFilterUpdateRef.current,
+                    );
+                  }
+
+                  scheduledFilterUpdateRef.current =
+                    window.requestAnimationFrame(() => {
+                      scheduledFilterUpdateRef.current = null;
+                      updateFilterPositions();
+                    });
+                }}
+                className="md:flex-nowrap"
+              />
+            </div>
+          </div>
           <Timeline filter={timelineFilter} />
         </section>
 

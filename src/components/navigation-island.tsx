@@ -29,6 +29,7 @@ export const NavigationIsland = ({
     visible: boolean;
   }>({ width: 0, left: 0, visible: false });
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
+  const desktopNavRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToSection = useCallback((sectionId: string) => {
     if (typeof window === "undefined") {
@@ -152,10 +153,66 @@ export const NavigationIsland = ({
     };
   }, [updateIndicatorForSection]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    const doc = document.documentElement;
+    const gapBelowNav = 16;
+
+    const updateNavOffset = () => {
+      const nav = desktopNavRef.current;
+
+      if (!mediaQuery.matches || !nav) {
+        doc.style.setProperty("--nav-island-offset", "6.25rem");
+        return;
+      }
+
+      const computedStyles = window.getComputedStyle(nav);
+      const topValue = parseFloat(computedStyles.top) || 0;
+      const height = nav.offsetHeight || 0;
+
+      doc.style.setProperty(
+        "--nav-island-offset",
+        `${topValue + height + gapBelowNav}px`,
+      );
+    };
+
+    const handleMediaChange = () => updateNavOffset();
+
+    updateNavOffset();
+
+    window.addEventListener("resize", updateNavOffset);
+
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", handleMediaChange);
+    } else if (typeof mediaQuery.addListener === "function") {
+      mediaQuery.addListener(handleMediaChange);
+    }
+
+    return () => {
+      window.removeEventListener("resize", updateNavOffset);
+
+      if (typeof mediaQuery.removeEventListener === "function") {
+        mediaQuery.removeEventListener("change", handleMediaChange);
+      } else if (typeof mediaQuery.removeListener === "function") {
+        mediaQuery.removeListener(handleMediaChange);
+      }
+    };
+  }, []);
+
   return (
     <>
-      <div className="fixed top-6 z-40 hidden items-center rounded-xs border border-white/12 bg-white/[0.05] backdrop-blur-md transition-all duration-300 ease-out md:flex left-1/2 -translate-x-1/2">
-        <div className="relative flex">
+      <div
+        className="fixed inset-x-0 z-40 hidden justify-center md:flex"
+        style={{
+          top: "calc(1.75rem + env(safe-area-inset-top, 0px))",
+        }}
+        ref={desktopNavRef}
+      >
+        <div className="relative flex items-center rounded-xs border border-white/12 bg-white/[0.05] backdrop-blur-md transition-all duration-300 ease-out">
           <span
             aria-hidden="true"
             className={cn(
@@ -205,7 +262,10 @@ export const NavigationIsland = ({
             type="button"
             aria-label="Toggle navigation"
             aria-expanded={mobileNavOpen}
-            className="fixed right-6 top-6 z-50 flex h-10 w-10 items-center justify-center rounded-xs border border-white/10 bg-white/[0.08] text-muted-foreground backdrop-blur-sm transition hover:text-neutralHighlight md:hidden"
+            className="fixed right-6 z-50 flex h-10 w-10 items-center justify-center rounded-xs border border-white/10 bg-white/[0.08] text-muted-foreground backdrop-blur-sm transition hover:text-neutralHighlight md:hidden"
+            style={{
+              top: "calc(1.75rem + env(safe-area-inset-top, 0px))",
+            }}
           >
             {mobileNavOpen ? (
               <XIcon size={18} weight="light" />
