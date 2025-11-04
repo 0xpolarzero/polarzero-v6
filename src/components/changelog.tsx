@@ -13,7 +13,7 @@ export const Changelog = () => {
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" size="sm" className="h-6" asChild>
             <a
-              href="https://polarzero-v3.vercel.app"
+              href="https://v3.polarzero.xyz"
               className="font-mono text-xs tracking-widest"
               target="_blank"
               rel="noreferrer"
@@ -23,7 +23,7 @@ export const Changelog = () => {
           </Button>
           <Button variant="outline" size="sm" className="h-6" asChild>
             <a
-              href="https://polarzero-v4.vercel.app"
+              href="https://v4.polarzero.xyz"
               className="font-mono text-xs tracking-widest"
               target="_blank"
               rel="noreferrer"
@@ -33,7 +33,7 @@ export const Changelog = () => {
           </Button>
           <Button variant="outline" size="sm" className="h-6" asChild>
             <a
-              href="https://polarzero-v5.vercel.app"
+              href="https://v5.polarzero.xyz"
               className="font-mono text-xs tracking-widest"
               target="_blank"
               rel="noreferrer"
