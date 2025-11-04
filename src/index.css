@@ -1,16 +1,73 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
+  color-scheme: light;
   --charcoal: 246 20% 4%;
-  --mist: 216 38% 68%;
-  --neutral-highlight: 36 68% 93%;
+  --mist: 218 62% 58%;
+  --neutral-highlight: 230 18% 22%;
 
-  --background: var(--charcoal);
+  --background: 246 22% 97%;
+  --foreground: 230 18% 12%;
+
+  --muted: 240 18% 88%;
+  --muted-foreground: 230 16% 36%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 230 18% 12%;
+
+  --card: 246 20% 97%;
+  --card-foreground: 230 18% 12%;
+
+  --border: 230 18% 70%;
+  --input: 230 18% 64%;
+
+  --primary: var(--mist);
+  --primary-foreground: 246 20% 6%;
+
+  --secondary: 260 45% 72%;
+  --secondary-foreground: 246 20% 16%;
+
+  --accent: 246 20% 90%;
+  --accent-foreground: 246 20% 18%;
+
+  --destructive: 2 78% 56%;
+  --destructive-foreground: 0 0% 100%;
+
+  --ring: var(--mist);
+  --radius: 0.5rem;
+  --chart-1: 221 45% 56%;
+  --chart-2: 251 42% 58%;
+  --chart-3: 230 30% 52%;
+  --chart-4: 195 35% 54%;
+  --chart-5: 36 65% 58%;
+  --body-gradient:
+    radial-gradient(
+      circle at 18% 20%,
+      rgba(140, 164, 216, 0.18),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(170, 162, 218, 0.14),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 52% 86%,
+      rgba(212, 220, 236, 0.16),
+      transparent 50%
+    );
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --mist: 216 38% 68%;
+  --background: 246 20% 4%;
   --foreground: 230 18% 90%;
+  --neutral-highlight: 36 68% 93%;
 
   --muted: 240 12% 18%;
   --muted-foreground: 226 18% 70%;
@@ -24,48 +81,20 @@
   --border: 230 18% 22%;
   --input: 230 18% 22%;
 
-  --primary: var(--mist);
-  --primary-foreground: 246 20% 5%;
-
   --secondary: 260 45% 70%;
   --secondary-foreground: 246 20% 5%;
 
   --accent: 240 14% 22%;
   --accent-foreground: 230 18% 88%;
 
-  --destructive: 2 78% 56%;
-  --destructive-foreground: 0 0% 100%;
-
   --ring: var(--mist);
-  --radius: 0.5rem;
   --chart-1: 221 45% 60%;
   --chart-2: 251 42% 65%;
   --chart-3: 230 30% 50%;
   --chart-4: 195 35% 55%;
   --chart-5: 36 65% 60%;
-}
-
-.dark {
-  --background: 246 20% 4%;
-  --foreground: 230 18% 90%;
-}
-
-body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', sans-serif;
-  font-feature-settings: 'rlig' 1, 'calt' 1;
-  position: relative;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(
+  --body-gradient:
+    radial-gradient(
       circle at 20% 20%,
       rgba(140, 168, 217, 0.12),
       transparent 45%
@@ -80,6 +109,31 @@ body::before {
       rgba(243, 234, 216, 0.07),
       transparent 50%
     );
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family:
+    "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  font-feature-settings:
+    "rlig" 1,
+    "calt" 1;
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: var(--body-gradient);
   pointer-events: none;
   z-index: 0;
   animation: vignetteShift 30s ease-in-out infinite alternate;
@@ -107,7 +161,7 @@ body::before {
   button,
   input,
   textarea {
-    @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-[rgba(7,7,9,0.75)];
+    @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 }
 

@@ -8,6 +8,30 @@
       name="description"
       content="PolarZero — Front-End Engineer & Creative Technologist crafting precise, editorial digital systems."
     />
+    <script>
+      (() => {
+        try {
+          const storageKey = "polarzero-theme";
+          const defaultTheme = "system";
+          const root = document.documentElement;
+          const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+          const storedValue = window.localStorage.getItem(storageKey);
+          const theme = storedValue || defaultTheme;
+          const resolved =
+            theme === "system"
+              ? mediaQuery.matches
+                ? "dark"
+                : "light"
+              : theme;
+
+          root.dataset.theme = resolved;
+          root.classList.toggle("dark", resolved === "dark");
+          root.style.colorScheme = resolved;
+        } catch (_error) {
+          // Ignore hydration guard issues (e.g. private browsing).
+        }
+      })();
+    </script>
     <title>PolarZero · Front-End Engineer & Creative Technologist</title>
   </head>
   <body>

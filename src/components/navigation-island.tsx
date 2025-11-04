@@ -2,6 +2,10 @@ import { ListIcon, XIcon } from "@phosphor-icons/react";
 import type { MouseEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  ThemeToggleDropdown,
+  ThemeToggleMobile,
+} from "@/components/theme-toggle";
+import {
   Sheet,
   SheetClose,
   SheetContent,
@@ -212,47 +216,50 @@ export const NavigationIsland = ({
         }}
         ref={desktopNavRef}
       >
-        <div className="relative flex items-center rounded-xs border border-white/12 bg-white/[0.05] backdrop-blur-md transition-all duration-300 ease-out">
-          <span
-            aria-hidden="true"
-            className={cn(
-              "pointer-events-none absolute -bottom-[1px] h-px rounded-xs bg-neutralHighlight transition-all duration-200 ease-out",
-              indicator.visible ? "opacity-100" : "opacity-0",
-            )}
-            style={{
-              width: indicator.width - 4,
-              transform: `translateX(${indicator.left + 2}px)`,
-            }}
-          />
-          {NAV.map((item) => {
-            const sectionId = item.href.startsWith("#")
-              ? item.href.substring(1)
-              : item.href;
-            const isActive = activeSection === sectionId;
+        <div className="flex items-center gap-3 rounded-xs border border-border/70 bg-card/80 px-2 py-1 backdrop-blur-md transition-all duration-300 ease-out">
+          <div className="relative flex items-center">
+            <span
+              aria-hidden="true"
+              className={cn(
+                "pointer-events-none absolute -bottom-[1px] h-px rounded-xs bg-foreground transition-all duration-200 ease-out dark:bg-neutralHighlight",
+                indicator.visible ? "opacity-100" : "opacity-0",
+              )}
+              style={{
+                width: indicator.width - 4,
+                transform: `translateX(${indicator.left + 2}px)`,
+              }}
+            />
+            {NAV.map((item) => {
+              const sectionId = item.href.startsWith("#")
+                ? item.href.substring(1)
+                : item.href;
+              const isActive = activeSection === sectionId;
 
-            return (
-              <a
-                key={item.href}
-                href={item.href}
-                ref={(node) => {
-                  linkRefs.current[sectionId] = node;
-                }}
-                onClick={(event: MouseEvent<HTMLAnchorElement>) => {
-                  if (item.href.startsWith("#")) {
-                    event.preventDefault();
-                    scrollToSection(sectionId);
-                  }
-                }}
-                aria-current={isActive ? "location" : undefined}
-                className={cn(
-                  "relative whitespace-nowrap px-4 py-2 text-[11px] font-mono uppercase tracking-[0.24em] text-muted-foreground transition-colors duration-150 hover:text-neutralHighlight focus-visible:text-neutralHighlight",
-                  isActive && "text-neutralHighlight",
-                )}
-              >
-                {item.label}
-              </a>
-            );
-          })}
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  ref={(node) => {
+                    linkRefs.current[sectionId] = node;
+                  }}
+                  onClick={(event: MouseEvent<HTMLAnchorElement>) => {
+                    if (item.href.startsWith("#")) {
+                      event.preventDefault();
+                      scrollToSection(sectionId);
+                    }
+                  }}
+                  aria-current={isActive ? "location" : undefined}
+                  className={cn(
+                    "relative whitespace-nowrap px-4 py-2 text-[11px] font-mono uppercase tracking-[0.24em] text-muted-foreground transition-colors duration-150 hover:text-foreground focus-visible:text-foreground dark:hover:text-neutralHighlight dark:focus-visible:text-neutralHighlight",
+                    isActive && "text-foreground dark:text-neutralHighlight",
+                  )}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
+          </div>
+          <ThemeToggleDropdown />
         </div>
       </div>
 
@@ -262,7 +269,7 @@ export const NavigationIsland = ({
             type="button"
             aria-label="Toggle navigation"
             aria-expanded={mobileNavOpen}
-            className="fixed right-6 z-50 flex h-10 w-10 items-center justify-center rounded-xs border border-white/10 bg-white/[0.08] text-muted-foreground backdrop-blur-sm transition hover:text-neutralHighlight md:hidden"
+            className="fixed right-6 z-50 flex h-10 w-10 items-center justify-center rounded-xs border border-border/70 bg-card/85 text-muted-foreground backdrop-blur-sm transition hover:text-accent-foreground hover:bg-accent md:hidden"
             style={{
               top: "calc(1.75rem + env(safe-area-inset-top, 0px))",
             }}
@@ -276,39 +283,42 @@ export const NavigationIsland = ({
         </SheetTrigger>
         <SheetContent
           side="right"
-          className="w-full max-w-xs border border-white/10 bg-white/[0.08] text-foreground backdrop-blur-xl"
+          className="w-full max-w-xs border border-border/60 bg-card/85 text-foreground backdrop-blur-xl"
         >
-          <nav className="space-y-3">
-            {NAV.map((item) => {
-              const sectionId = item.href.startsWith("#")
-                ? item.href.substring(1)
-                : item.href;
-              const isActive = activeSection === sectionId;
+          <div className="flex h-full flex-col justify-between">
+            <nav className="space-y-3">
+              {NAV.map((item) => {
+                const sectionId = item.href.startsWith("#")
+                  ? item.href.substring(1)
+                  : item.href;
+                const isActive = activeSection === sectionId;
 
-              return (
-                <SheetClose key={item.href} asChild>
-                  <a
-                    href={item.href}
-                    onClick={(event: MouseEvent<HTMLAnchorElement>) => {
-                      if (item.href.startsWith("#")) {
-                        event.preventDefault();
-                        scrollToSection(sectionId);
-                      }
+                return (
+                  <SheetClose key={item.href} asChild>
+                    <a
+                      href={item.href}
+                      onClick={(event: MouseEvent<HTMLAnchorElement>) => {
+                        if (item.href.startsWith("#")) {
+                          event.preventDefault();
+                          scrollToSection(sectionId);
+                        }
 
-                      onNavigate();
-                    }}
-                    aria-current={isActive ? "location" : undefined}
-                    className={cn(
-                      "block rounded-xs px-3 py-2 text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground transition-colors duration-150 hover:bg-white/[0.12] hover:text-neutralHighlight focus-visible:bg-white/[0.12] focus-visible:text-neutralHighlight",
-                      isActive && "bg-white/[0.08] text-neutralHighlight",
-                    )}
-                  >
-                    {item.label}
-                  </a>
-                </SheetClose>
-              );
-            })}
-          </nav>
+                        onNavigate();
+                      }}
+                      aria-current={isActive ? "location" : undefined}
+                      className={cn(
+                        "block rounded-xs px-3 py-2 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground transition-colors duration-150 hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground",
+                        isActive && "bg-accent text-accent-foreground",
+                      )}
+                    >
+                      {item.label}
+                    </a>
+                  </SheetClose>
+                );
+              })}
+            </nav>
+            <ThemeToggleMobile className="mt-8" />
+          </div>
         </SheetContent>
       </Sheet>
     </>

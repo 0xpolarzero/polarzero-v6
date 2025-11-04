@@ -131,12 +131,12 @@ const Timeline = ({ filter }: TimelineProps) => {
   return (
     <>
       <div className="relative">
-        <div className="hidden h-full w-px bg-white/12 md:block" aria-hidden />
+        <div className="hidden h-full w-px bg-border/80 md:block" aria-hidden />
         <div className="space-y-10 md:space-y-12">
           {filteredTimeline.map((group: TimelineYear) => (
             <div key={group.year} className="relative flex flex-col gap-2">
-              <span className="w-px bg-white/10 md:hidden" aria-hidden />
-              <div className="mb-3 text-[12px] font-mono uppercase tracking-[0.32em] text-neutralHighlight/80 md:mb-0 md:pr-6 md:text-right">
+              <span className="w-px bg-border/70 md:hidden" aria-hidden />
+              <div className="mb-3 text-[12px] font-mono uppercase tracking-[0.32em] text-foreground/80 dark:text-neutralHighlight/80 md:mb-0 md:pr-6 md:text-right">
                 {group.year}
               </div>
               <div className="space-y-6">

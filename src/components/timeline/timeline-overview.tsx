@@ -237,7 +237,7 @@ const TimelineOverview = ({
         style={{ bottom: "calc(2rem + env(safe-area-inset-bottom, 0px))" }}
       >
         <div className="pointer-events-auto relative w-[90vw] max-w-[72rem]">
-          <div className="pointer-events-none absolute inset-0 rounded-xs border border-white/12 bg-white/[0.05] backdrop-blur-md" />
+          <div className="pointer-events-none absolute inset-0 rounded-xs border border-border/70 bg-card/75 backdrop-blur-md" />
           <div className="relative rounded-xs px-6 py-2">
             <div
               className="pointer-events-auto relative"
@@ -245,7 +245,7 @@ const TimelineOverview = ({
               aria-hidden={items.length === 0}
             >
               <div
-                className="absolute left-0 right-0 h-px bg-white/10"
+                className="absolute left-0 right-0 h-px bg-border/70"
                 style={{ top: LINE_VERTICAL_OFFSET }}
               />
               {yearTicks.map((tick) => (
@@ -289,7 +289,7 @@ const TimelineOverview = ({
                       aria-hidden
                       data-highlighted={isHighlighted ? "true" : undefined}
                       className={cn(
-                        "pointer-events-none absolute inset-0 rounded-sm border border-white/20 opacity-75 transition duration-150 ease-out data-[highlighted=true]:opacity-100 data-[highlighted=true]:shadow-[0_12px_36px_rgba(7,7,9,0.5)]",
+                        "pointer-events-none absolute inset-0 rounded-sm border border-border/60 opacity-75 transition duration-150 ease-out data-[highlighted=true]:opacity-100",
                         categoryBarClassnames[entry.item.category],
                       )}
                     />
@@ -303,7 +303,7 @@ const TimelineOverview = ({
                           onFocus={() => onItemHover?.(entry.id)}
                           onBlur={() => onItemHover?.(null)}
                           data-highlighted={isHighlighted ? "true" : undefined}
-                          className="relative z-10 block h-[12px] w-full cursor-pointer rounded-sm bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutralHighlight focus-visible:ring-offset-2 focus-visible:ring-offset-[rgba(7,7,9,0.75)]"
+                          className="relative z-10 block h-[12px] w-full cursor-pointer rounded-sm bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:focus-visible:ring-neutralHighlight"
                           style={{
                             marginLeft: `${HITBOX_INSET_PX}px`,
                             marginRight: `${HITBOX_INSET_PX}px`,
@@ -324,7 +324,7 @@ const TimelineOverview = ({
                             {entry.item.from} – {entry.item.to ?? "today"} •{" "}
                             {getPeriod(entry.item.from, entry.item.to ?? null)}
                           </span>
-                          <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-neutralHighlight">
+                          <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-foreground dark:text-neutralHighlight">
                             {timelineCategoryMeta[entry.item.category].label}
                           </span>
                         </div>

@@ -23,8 +23,7 @@ export const TimelineFilters = forwardRef<HTMLDivElement, TimelineFiltersProps>(
         {
           label: "all",
           variant: "secondary",
-          className:
-            "bg-white/10 text-white hover:bg-white/16 hover:bg-white/10",
+          className: "bg-foreground/10 text-foreground hover:bg-foreground/20",
         },
         ...Object.values(timelineCategoryMeta),
       ].map((option) => (
@@ -35,7 +34,7 @@ export const TimelineFilters = forwardRef<HTMLDivElement, TimelineFiltersProps>(
           onClick={() => onChange(option.label as TimelineCategory | "all")}
           className={cn(
             option.className,
-            "font-mono text-[10px] uppercase tracking-[0.28em] font-semibold h-[21px] transition-all",
+            "font-mono text-[10px] uppercase tracking-[0.28em] font-semibold h-[21px] transition-all shadow-none",
             option.label !== value &&
               "bg-transparent opacity-75 hover:opacity-100",
           )}

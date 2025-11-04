@@ -246,7 +246,7 @@ function App() {
               className={cn(
                 "md:inline-flex md:w-auto transition-transform duration-300 ease-out will-change-transform",
                 filtersStuck &&
-                  "md:rounded-xs md:border md:border-white/12 md:bg-white/[0.05] md:px-4 md:py-2 md:backdrop-blur-md",
+                  "md:rounded-xs md:border md:border-border/70 md:bg-card/80 md:px-4 md:py-2 md:backdrop-blur-md",
               )}
               style={{
                 transform: `translateX(${filtersStuck ? filtersTranslate : 0}px)`,

@@ -113,7 +113,7 @@ export const TimelineCard = ({
       id={itemId}
       data-highlighted={highlighted ? "true" : undefined}
       className={cn(
-        "relative rounded-xs border border-white/12 bg-white/[0.02] px-6 py-5 transition duration-150 ease-out hover:border-mist/40 hover:bg-white/[0.05] data-[highlighted=true]:border-mist/50 data-[highlighted=true]:bg-white/[0.05] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-[rgba(7,7,9,0.75)] md:px-8 md:py-6",
+        "relative rounded-xs border border-border/70 bg-card/80 px-6 py-5 transition duration-150 ease-out hover:border-primary/60 hover:bg-card/95 data-[highlighted=true]:border-primary/60 data-[highlighted=true]:bg-card focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:px-8 md:py-6",
       )}
       onMouseEnter={handlePointerEnter}
       onMouseLeave={handlePointerLeave}
