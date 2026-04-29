@@ -32,6 +32,83 @@ export type TimelineYear = {
 
 export const TIMELINE: TimelineYear[] = [
   {
+    year: "2026",
+    items: [
+      {
+        title: "svvy",
+        category: "work",
+        from: "2026-04",
+        caption:
+          "a strategic coding workbench for directing bounded, workflow-backed agent work",
+        description: (
+          <div className="text-sm">
+            <ul className="list-inside">
+              <li>
+                -{" "}
+                <Link
+                  href="https://github.com/0xpolarzero/svvy"
+                  className="mr-2"
+                >
+                  svvy
+                </Link>
+                organizes coding work around orchestrator sessions that hold
+                product intent, route implementation into bounded threads, and
+                reconcile durable results from structured, inspectable workflows
+                those threads supervise without bloating orchestrator context,
+                while letting you steer at any layer;
+              </li>
+              <li>
+                -{" "}
+                <Link
+                  href="https://github.com/0xpolarzero/electrobun-browser-tools"
+                  className="mr-2"
+                >
+                  electrobun-browser-tools
+                </Link>
+                shipped an inspection and driving bridge for Electrobun apps,
+                exposing windows, views, layout trees, DOM state, logs, events,
+                screenshots, and Playwright-style locators to agents;
+              </li>
+              <li>
+                -{" "}
+                <Link
+                  href="https://github.com/0xpolarzero/electrobun-e2e"
+                  className="mr-2"
+                >
+                  electrobun-e2e
+                </Link>
+                shipped shared end-to-end infrastructure for running Electrobun
+                desktop apps headlessly in OrbStack Linux environments.
+              </li>
+            </ul>
+            <p className="mt-2">
+              Built with{" "}
+              <Link href="https://electrobun.dev" className="mr-0.5">
+                Electrobun
+              </Link>
+              ,{" "}
+              <Link href="https://svelte.dev" className="mr-0.5">
+                Svelte
+              </Link>
+              ,{" "}
+              <Link href="https://pi.dev" className="mr-0.5">
+                Pi
+              </Link>
+              , and{" "}
+              <Link href="https://smithers.sh" className="mr-0.5">
+                Smithers
+              </Link>
+              .
+            </p>
+          </div>
+        ),
+        links: {
+          github: "https://github.com/0xpolarzero/svvy",
+        },
+      },
+    ],
+  },
+  {
     year: "2025",
     items: [
       {
